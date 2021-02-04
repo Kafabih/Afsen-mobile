@@ -10,14 +10,12 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class Register extends React.Component {
   state = {
-    name: '',
     username: '',
     password: '',
-    email: '',
-    company_id: '1',
     loading: false,
   };
 
@@ -27,44 +25,41 @@ class Register extends React.Component {
     });
   }
 
-  doRegister() {
-    const {name, username, password, email, company_id} = this.state;
-    if (name && username && password && email && company_id) {
+  doLogin() {
+    const {username, password} = this.state;
+    if (username && password) {
       const req = {
-        name: name,
-        username: username,
+        email: username,
         password: password,
-        email: email,
-        company_id: company_id,
       };
       this.setState({
         loading: true,
       });
-      axios.post('https://fb964f8c624c.ngrok.io/register_account', req).then(
+      axios.post('https://reqres.in/api/register', req).then(
         (res) => {
+          console.warn(res.data);
           this.setState({
             loading: false,
-          }).then((res) => {
-            alert('Registration Is Successful!!');
+          });
+          AsyncStorage.setItem('token', res.data.token).then((res) => {
+            // this.props.navigation.navigate('Dashboard');
+            alert('Login Successfull!!');
           });
         },
         (err) => {
-          console.warn(err);
           this.setState({
             loading: false,
           });
-          alert('Registration failed');
+          alert('Username or Password is wrong');
         },
       );
     } else {
-      alert('complete your registration');
+      alert('enter username and password');
     }
   }
 
   render() {
-    const {name, username, password, email, company_id, loading} = this.state;
-    // const company = this.props.route.params.company;
-    // console.warn(company);
+    const {username, password, loading} = this.state;
     return (
       <View style={styles.container}>
         <Text
@@ -76,23 +71,8 @@ class Register extends React.Component {
           }}>
           Register Form
         </Text>
+
         <View style={styles.formWrapper}>
-          {/* <View style={styles.formRow}>
-            <Text
-              style={{
-                color: '#fff',
-                textAlign: 'left',
-                fontSize: 18,
-              }}>
-              Company ID
-            </Text>
-            <TextInput
-              style={styles.textInput}
-              value={company_id}
-              placeholderTextColor='black'
-              onChangeText={(value) => this.onChangeHandle('company_id', value)}
-            />
-          </View> */}
           <View style={styles.formRow}>
             <Text
               style={{
@@ -104,9 +84,10 @@ class Register extends React.Component {
             </Text>
             <TextInput
               style={styles.textInput}
+              placeholder="Enter Username"
+              placeholderTextColor="#333"
               value={username}
               onChangeText={(value) => this.onChangeHandle('username', value)}
-              placeholderTextColor='black'
             />
           </View>
           <View style={styles.formRow}>
@@ -116,53 +97,24 @@ class Register extends React.Component {
                 textAlign: 'left',
                 fontSize: 18,
               }}>
-              Email
+              Password
             </Text>
             <TextInput
               style={styles.textInput}
-              value={email}
-              onChangeText={(value) => this.onChangeHandle('email', value)}
-            />
-          </View>
-          <View style={styles.formRow}>
-            <Text
-              style={{
-                color: '#fff',
-                textAlign: 'left',
-                fontSize: 18,
-              }}>
-              Name
-            </Text>
-            <TextInput
-              style={styles.textInput}
-              value={name}
-              onChangeText={(value) => this.onChangeHandle('name', value)}
-            />
-            
-          </View>
-          <View style={styles.formRow}>
-            <Text
-              style={{
-                color: '#fff',
-                textAlign: 'left',
-                fontSize: 18,
-              }}>
-              password
-            </Text>
-            <TextInput
-              style={styles.textInput}
+              placeholder="Enter Password"
+              placeholderTextColor="#333"
+              secureTextEntry={true}
               value={password}
               onChangeText={(value) => this.onChangeHandle('password', value)}
             />
-            
           </View>
           <TouchableOpacity
             activeOpacity={0.8}
             style={{
               ...styles.registerBtn,
-              backgroundColor: loading ? '#301834' : '#301834',
+              backgroundColor: '#301834',
             }}
-            onPress={() => this.doRegister()}
+            onPress={() => this.doLogin()}
             disabled={loading}>
             <LinearGradient
               start={{x: 0.0, y: 0.5}}
@@ -170,9 +122,7 @@ class Register extends React.Component {
               colors={['#fff', '#fff']}
               style={{borderRadius: 3}}>
               <View style={styles.circleGradient}>
-                <Text style={styles.RegisterText}>
-                  {loading ? 'loading...' : 'Register'}
-                </Text>
+                <Text style={styles.RegisterText}>{loading ? 'loading...' : 'login'}</Text>
               </View>
             </LinearGradient>
           </TouchableOpacity>

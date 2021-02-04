@@ -4,7 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const Container = styled.View`
   width: 100%;
-  height: 50px;
+  height: 15px;
   padding-horizontal: 10px;
   flex-direction: row;
   align-items: center;
@@ -34,7 +34,7 @@ const Header = ({ headerTitle }) => {
       
       <Title>{headerTitle}</Title>
       <IconButtonsRow>
-        <IconButton activeOpacity={0.7} onPress={() => true}>
+        {/* <IconButton activeOpacity={0.7} onPress={() => true}>
           <MaterialCommunityIcons name='magnify' size={28} color='#010101' />
         </IconButton>
         <IconButton activeOpacity={0.7} onPress={() => true}>
@@ -43,7 +43,7 @@ const Header = ({ headerTitle }) => {
             size={28}
             color='#010101'
           />
-        </IconButton>
+        </IconButton> */}
       </IconButtonsRow>
     </Container>
   );

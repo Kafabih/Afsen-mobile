@@ -9,52 +9,9 @@ import {
   TextInput,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import axios from 'axios';
 
 class ValidasiRegister extends React.Component {
-  state = {
-    company_name: '',
-    loading: false,
-  };
-
-  onChangeHandle(state, value) {
-    this.setState({
-      [state]: value,
-    });
-  }
-
-  doValidate() {
-    const {company_name} = this.state;
-    if (company_name) {
-      const req = {
-        company_name: company_name,
-      };
-      this.setState({
-        loading: true,
-      });
-      // console.warn(req);
-      axios
-        .post('http://fb964f8c624c.ngrok.io/register_account/check', req)
-        .then(
-          (res) => {
-            // console.warn(res.data);
-            this.props.navigation.navigate('Register',); //{company: res.data.data}
-            alert('Company is found!!');
-          },
-          (err) => {
-            // console.warn(err);
-            this.setState({
-              loading: false,
-            });
-            alert('Company not found');
-          },
-        );
-    } else {
-      alert('enter Company Name');
-    }
-  }
   render() {
-    const {company_name, loading} = this.state;
     return (
       <View style={styles.container}>
         <View>
@@ -84,29 +41,22 @@ class ValidasiRegister extends React.Component {
               style={styles.textInput}
               placeholder="Company Name"
               placeholderTextColor="#333"
-              value={company_name}
-              onChangeText={(value) =>
-                this.onChangeHandle('company_name', value)
-              }
             />
           </View>
           <TouchableOpacity
             activeOpacity={0.8}
             style={{
               ...styles.registerBtn,
-              backgroundColor: loading ? '#301834' : '#301834',
+              backgroundColor: '#301834',
             }}
-            onPress={() => this.doValidate()}
-            disabled={loading}>
+            onPress={() => this.props.navigation.navigate('Register')}>
             <LinearGradient
               start={{x: 0.0, y: 0.5}}
               end={{x: 1.0, y: 0.5}}
               colors={['#fff', '#fff']}
               style={{borderRadius: 3}}>
               <View style={styles.circleGradient}>
-                <Text style={styles.RegisterText}>
-                  {loading ? 'loading...' : 'Validate'}
-                </Text>
+                <Text style={styles.RegisterText}>Register Account</Text>
               </View>
             </LinearGradient>
           </TouchableOpacity>

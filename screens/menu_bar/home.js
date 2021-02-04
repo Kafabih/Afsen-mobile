@@ -1,5 +1,4 @@
 import React, {useState, useEffect, Component} from 'react';
-import styled from 'styled-components/native';
 import Header from '../../components/header';
 import Avatar from '../../components/avatar';
 import {Card} from 'react-native-shadow-cards';
@@ -9,9 +8,41 @@ import {
   View,
   StyleSheet,
   ScrollView,
+  Image
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
+import { images, icons, COLORS, FONTS, SIZES } from '../../constants';
+import LinearGradient from 'react-native-linear-gradient';
+
+const OptionItem = ({ bgColor, icon, label, onPress }) => {
+  return (
+      <TouchableOpacity
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          onPress={onPress}
+      >
+          <View style={[styles.shadow, { width: 60, height: 60 }]}>
+              <LinearGradient
+                  style={[{ flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 15, backgroundColor: 'red' }]}
+                  colors={bgColor}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 0, y: 1 }}
+              >
+                  <Image
+                      source={icon}
+                      resizeMode="cover"
+                      style={{
+                          tintColor: COLORS.white,
+                          width: 30,
+                          height: 30,
+                      }}
+                  />
+              </LinearGradient>
+          </View>
+          <Text style={{ marginTop: SIZES.base, color: COLORS.white, ...FONTS.body3 }}>{label}</Text>
+      </TouchableOpacity>
+  )
+}
 
 class Home extends Component {
   //digital clocks
@@ -123,7 +154,7 @@ class Home extends Component {
       return (
         <ScrollView>
           <View  style={styles.info}>
-            <View style={styles.rowContainer} key={element.key}>
+            <View key={element.key}>
               <Text style={styles.infoText}>{element.title}</Text>
               <Text style={styles.textStyle}>{element.subtitle}</Text>
               <Text>{element.line}</Text>
@@ -133,8 +164,10 @@ class Home extends Component {
       );
     });
   };
+
+  
   render(props) {
-    return (
+    return ( 
       <View style={styles.container}>
         <Header headerTitle="" />
         <View style={styles.rowContainer}>
@@ -157,7 +190,8 @@ class Home extends Component {
             padding: 30,
             margin: 20,
             paddingTop: 15,
-            backgroundColor: '#C3C3C3',
+            //backgroundColor: '#C3C3C3',
+            height: 150
           }}>
           <Text style={styles.TextLeft}>
             <Text style={{fontSize: 18}}>{this.state.currentDay}</Text>
@@ -184,43 +218,65 @@ class Home extends Component {
             </TouchableOpacity>
           </View>
         </Card>
-        <View>{this.list}</View>
+        {/* <ScrollView>
+        <View>{this.list()}</View>
+        </ScrollView> */}
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={{ flexDirection: 'row', marginTop: SIZES.padding, paddingHorizontal: SIZES.base }}>
+                    <OptionItem
+                        icon={icons.airplane}
+                        bgColor={['#46aeff', '#5884ff']}
+                        label="Shift"
+                        onPress={() => this.props.navigation.navigate('Shiftscreen')}
+                    />
+                    <OptionItem
+                        icon={icons.train}
+                        bgColor={['#fddf90', '#fcda13']}
+                        label="Salary"
+                        onPress={() => this.props.navigation.navigate('Salaryscreen')}
+                    />
+                    <OptionItem
+                        icon={icons.bus}
+                        bgColor={['#e973ad', '#da5df2']}
+                        label="Presences"
+                        onPress={() => { console.log("Bus") }}
+                    />
+                    <OptionItem
+                        icon={icons.taxi}
+                        bgColor={['#fcaba8', '#fe6bba']}
+                        label="Calendar"
+                        onPress={() => { console.log("Taxi") }}
+                    />
+                </View>
+
+                <View style={{ flexDirection: 'row', marginTop: SIZES.radius, paddingHorizontal: SIZES.base }}>
+                    <OptionItem
+                        icon={icons.bed}
+                        bgColor={['#ffc465', '#ff9c5f']}
+                        label="Time Off"
+                        onPress={() => { console.log("Hotel") }}
+                    />
+                    <OptionItem
+                        icon={icons.eat}
+                        bgColor={['#7cf1fb', '#4ebefd']}
+                        label="My Profile"
+                        onPress={() => { console.log("Eats") }}
+                    />
+                    <OptionItem
+                        icon={icons.compass}
+                        bgColor={['#7be993', '#46caaf']}
+                        label="Report"
+                        onPress={() => this.props.navigation.navigate('Reportscreen')}
+                    />
+                    <OptionItem
+                        icon={icons.event}
+                        bgColor={['#fca397', '#fc7b6c']}
+                        label="Event"
+                        onPress={() => { console.log("Event") }}
+                    />
+                </View>
+            </View>
           
-          {/* <View style={styles.info}>
-            <View style={styles.rowContainer}>
-              <Text style={styles.infoText}>Gofar Ismail</Text>
-              <Text style={styles.textStyle}>Absent</Text>
-            </View>
-            <Text>__________________________________________________</Text>
-          </View>
-          <View style={styles.info}>
-            <View style={styles.rowContainer}>
-              <Text style={styles.infoText}>Nia Karlina</Text>
-              <Text style={styles.textStyle}>Ijin</Text>
-            </View>
-            <Text>__________________________________________________</Text>
-          </View>
-          <View style={styles.info}>
-            <View style={styles.rowContainer}>
-              <Text style={styles.infoText}>Illganeau</Text>
-              <Text style={styles.textStyle}>Nerfed</Text>
-            </View>
-            <Text>__________________________________________________</Text>
-          </View>
-          <View style={styles.info}>
-            <View style={styles.rowContainer}>
-              <Text style={styles.infoText}>Mugnier</Text>
-              <Text style={styles.textStyle}>Rotated</Text>
-            </View>
-            <Text>__________________________________________________</Text>
-          </View>
-          <View style={styles.info}>
-            <View style={styles.rowContainer}>
-              <Text style={styles.infoText}>Iceschillendrig</Text>
-              <Text style={styles.textStyle}>Cuti</Text>
-            </View>
-            <Text>__________________________________________________</Text>
-          </View> */}
       </View>
     );
   }
@@ -229,7 +285,7 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(24, 18, 26, 0.85)',
+    backgroundColor: '#B747D3',
     flex: 1,
   },
   rowContainer: {
@@ -264,4 +320,15 @@ const styles = StyleSheet.create({
   TextLeft: {
     alignItems: 'flex-start',
   },
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+}
 });

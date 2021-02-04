@@ -6,18 +6,18 @@ import Images from '../assets';
 
 const bgColors = {
   home: '#fff',
-  lembur: '#fff',
+  time: '#fff',
   cuti: '#fff',
   user: '#fff',
-  ijin: '#fff'
+  permission: '#fff'
 };
 
 const textColors = {
   home: '#000',
-  lembur: '#000',
+  time: '#000',
   cuti: '#000',
   user: '#000',
-  ijin: '#000'
+  permission: '#000'
 };
 
 const Container = styled.TouchableWithoutFeedback``;
